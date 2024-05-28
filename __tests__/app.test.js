@@ -38,3 +38,31 @@ beforeEach(() => {
         });
     });
   });
+
+  describe("GET /api/articles/:article_id", () => {
+    test("Responds with an article object with appropriate properties", () => {
+        return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body }) => {
+            expect(body.article).toHaveProperty("author");
+            expect(body.article).toHaveProperty("title");
+            expect(body.article).toHaveProperty("article_id");
+            expect(body.article).toHaveProperty("body");
+            expect(body.article).toHaveProperty("topic");
+            expect(body.article).toHaveProperty("created_at");
+            expect(body.article).toHaveProperty("votes");
+            expect(body.article).toHaveProperty("article_img_url");
+          })
+        });
+    test("Responds with a 404 error if article ID does not exist", () => {
+      return request(app)
+      .get("/api/articles/999999")
+      .expect(404);
+    })
+    test("Responds with a 400 error if article ID is invalid data", () => {
+      return request(app)
+      .get("/api/articles/ABC")
+      .expect(400);
+    })
+    });
