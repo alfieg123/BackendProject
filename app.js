@@ -6,5 +6,8 @@ const app = express();
 app.use(express.json())
 
 app.get("/api/topics", getAllTopics);
+app.get("/api", (request, response) => {
+    response.sendFile(__dirname + '/endpoints.json')
+})
 
 module.exports = app;
