@@ -1,8 +1,20 @@
 # Northcoders News API
 
-For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/courses/be/nc-news).
+1) Clone Repository
 
+    git clone https://github.com/alfieg123/BackendProject.git
 
+2) Install Dependencies
+
+    npm install
+
+3) Create Environment Variable Files in Root Directory
+
+    // .env.test
+    PG_DATABASE=test_database_name
+    
+    // .env.development
+    PG_DATABASE=database_name
 
 --- 
 
