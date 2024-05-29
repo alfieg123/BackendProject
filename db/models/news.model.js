@@ -28,7 +28,6 @@ exports.selectArticleByID = (article_id) => {
     });
 }
 
-
 exports.selectArticles = () => {
     return db.query(`SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, 
     articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles 
@@ -85,3 +84,23 @@ exports.selectArticleWithCommentsByID = (article_id) => {
       throw error;
     });
 };
+
+exports.selectUserByUsername = (username) => {
+  return db.query(`SELECT * FROM users WHERE username = $1;`, [username])
+  .then((response) => {
+      return response.rows[0];
+  })
+  .catch((error) => {
+      throw error;
+  });
+};
+
+exports.insertComment = (article_id, username, body) => {
+    return db.query(`INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) RETURNING *;`, [article_id, username, body])
+    .then((response) => {
+      return response.rows[0];
+    })
+    .catch((error) => {
+      throw error;
+    });
+  };
