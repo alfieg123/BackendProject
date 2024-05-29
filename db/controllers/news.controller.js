@@ -1,5 +1,5 @@
 const { request } = require("../../app.js")
-const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID } = require("../models/news.model.js")
+const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID, selectUserByUsername, insertComment } = require("../models/news.model.js")
 
 exports.getAllTopics = (request, response, next) => {
     selectTopics()
@@ -10,8 +10,8 @@ exports.getAllTopics = (request, response, next) => {
 }
 
 exports.getArticleByID = (request, response, next) => {
-    const id = request.params.article_id
-    selectArticleByID(id)
+    const article_id = request.params.article_id
+    selectArticleByID(article_id)
     .then((article) => {
         response.status(200).send({ article })
         })
@@ -27,10 +27,29 @@ exports.getAllArticles = (request, response, next) => {
 }
 
 exports.getArticleCommentsByID = (request, response, next) => {
-    const id = request.params.article_id
-    selectCommentsByArticleID(id)
+    const article_id = request.params.article_id
+    selectCommentsByArticleID(article_id)
     .then((comments) => {
         response.status(200).send({ comments : [comments]})
+    })
+    .catch(next);
+}
+
+exports.postComment = (request, response, next) => {
+    const article_id  = request.params.article_id;
+    const { username, body } = request.body;
+    selectUserByUsername(username)
+    .then((user) => {
+        if (!user) {
+            return Promise.reject({
+                status: 404,
+                msg: `User ${username} not found`
+            });
+        }
+        return insertComment(article_id, username, body);
+    })
+    .then((comment) => {
+        response.status(201).send({comment})
     })
     .catch(next);
 }

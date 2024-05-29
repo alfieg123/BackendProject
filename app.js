@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID } = require("../be-nc-news/db/controllers/news.controller")
+const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment } = require("../be-nc-news/db/controllers/news.controller")
 
 const app = express();
 app.use(express.json())
@@ -13,6 +13,8 @@ app.get("/api/articles", getAllArticles)
 app.get("/api/articles/:article_id", getArticleByID)
 app.get("/api/articles/:article_id/comments", getArticleCommentsByID)
 
+app.post("/api/articles/:article_id/comments", postComment)
+
 app.use((error, request, response, next) => {
     if (error.status && error.msg) {
       response.status(error.status).send({ msg: error.msg });
@@ -20,6 +22,9 @@ app.use((error, request, response, next) => {
     else if (error.code === '22P02') {
       response.status(400).send({ msg : 'Bad Request' });
     } 
+    else if (error.code === '23503') {
+        response.status(404).send({ msg: 'User not found' });
+    }
     else {
         console.log(error)
       response.status(500).send({ msg: 'Internal Server Error' });

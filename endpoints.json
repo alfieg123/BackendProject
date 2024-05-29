@@ -54,5 +54,22 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Adds a comment on an article",
+    "exampleRequestBody": {
+      "username": "cooljmessy",
+      "body": "This is a new comment."
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 90,
+        "body": "This is a new comment.",
+        "article_id": 1,
+        "author": "cooljmessy",
+        "votes": 0,
+        "created_at": 1948371320000
+      }
+    }
   }
 }
