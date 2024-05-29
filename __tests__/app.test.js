@@ -96,3 +96,39 @@ beforeEach(() => {
             })
           });
         })
+
+        describe("GET /api/articles/:article_id/comments", () => {
+          test("Responds with an array of comments with appropriate properties for given article ID", () => {
+              return request(app)
+              .get("/api/articles/6/comments")
+              .expect(200)
+              .then(({ body }) => {
+                console.log(body)
+                expect(Array.isArray(body.comments)).toBe(true);
+                expect(body.comments.length).toBeGreaterThan(0);
+                body.comments.forEach((comment) => {
+                expect(comment).toHaveProperty("votes");
+                expect(comment).toHaveProperty("created_at");
+                expect(comment).toHaveProperty("author");
+                expect(comment).toHaveProperty("body");
+                expect(comment).toHaveProperty("article_id", 6);
+                })
+              });
+            })
+          test("Responds with a 404 error if article ID does not exist", () => {
+            return request(app)
+            .get("/api/articles/999999/comments")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).toMatchObject({ "msg" : "No article found for article_id: 999999" });
+            });
+          })
+          test("Responds with a 400 error if article ID is invalid data", () => {
+            return request(app)
+            .get("/api/articles/ABC/comments")
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).toMatchObject({ "msg" : "Bad Request" });
+            });
+          })
+          });

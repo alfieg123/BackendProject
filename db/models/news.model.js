@@ -41,3 +41,47 @@ exports.selectArticles = () => {
         throw error;
     });
 }
+
+exports.selectCommentsByArticleID = (article_id) => {
+    return db.query(`SELECT * FROM comments WHERE article_id = $1
+    ORDER BY created_at DESC;`, [article_id])
+    .then((response) => {
+        const article = response.rows[0];
+        if (!article) {
+          return Promise.reject({
+            status: 404,
+            msg: `No article found for article_id: ${article_id}`,
+        })
+        }
+    return article
+    })
+    .catch((error) => {
+        throw error;
+    });
+}
+
+exports.selectArticleWithCommentsByID = (article_id) => {
+    return this.selectArticleByID(article_id)
+        .then((article) => {
+            if (!article) {
+            return Promise.reject({
+                status: 404,
+                msg: `No article found for article_id: ${article_id}`,
+            })
+        }
+    return this.selectCommentsByArticleID(article_id)
+        .then((comments) => {
+          return comments.map((comment) => ({
+            comment_id: comment.comment_id,
+            votes: comment.votes,
+            created_at: comment.created_at,
+            author: comment.author,
+            body: comment.body,
+            article_id: comment.article_id
+          }));
+        });
+    })
+    .catch((error) => {
+      throw error;
+    });
+};

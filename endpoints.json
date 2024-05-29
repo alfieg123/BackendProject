@@ -27,7 +27,7 @@
     }
   },
   "GET /api/articles/:article_id": {
-    "description": "retrieve an article by its id",
+    "description": "retrieve an article by its ID",
     "exampleResponse": {
       "article": {
         "title": "Running a Node App",
@@ -38,6 +38,21 @@
         "votes": 0,
         "article_img_url": "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?w=700&h=700"
       }
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "retrieve comments of an article by its ID",
+    "exampleResponse": {
+      "comments" : [
+        {
+          "comment_id": 74,
+          "body": "Eius dolor qui ut eligendi. Vero et animi consequatur placeat repudiandae ex dolores qui magni. Omnis magnam rerum molestiae. Nihil rerum ipsa error quibusdam. Qui temporibus quia quia. Natus necessitatibus numquam deserunt quisquam distinctio soluta consequatur.",
+          "article_id": 6,
+          "author": "cooljmessy",
+          "votes": 3,
+          "created_at": 1578971520000
+        }
+      ]
     }
   }
 }
