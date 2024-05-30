@@ -92,13 +92,28 @@
   },
   "DELETE /api/comments/:comment_id": {
     "description": "deletes the given comment by comment_id",
-    "responses": {
+    "exampleResponse": {
       "204": {},
       "404": {
         "msg": "Comment not found"
       },
       "400": {
         "msg": "Bad request"
+      }
+    }
+  },
+  "GET /api/users": {
+    "description": "gets all users",
+    "exampleResponse": {
+      "200": {
+        "description": "Responds with an array of user objects",
+        "example": [
+          {
+            "username": "cooljmessy",
+            "name": "Peter Messy",
+            "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/1/1a/MR_MESSY_4A.jpg/revision/latest/scale-to-width-down/250?cb=20170730171002"
+          }
+        ]
       }
     }
   }
