@@ -1,5 +1,5 @@
 const { request } = require("../../app.js")
-const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID, selectUserByUsername, insertComment, updateArticleVotesByID } = require("../models/news.model.js")
+const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID, selectUserByUsername, insertComment, updateArticleVotesByID, removeComment } = require("../models/news.model.js")
 
 exports.getAllTopics = (request, response, next) => {
     selectTopics()
@@ -63,3 +63,13 @@ exports.patchArticleVotes = (request, response, next) => {
       })
       .catch(next);
   };
+
+  exports.deleteCommentByID = (request, response, next) => {
+    const comment_id = request.params.comment_id;
+        removeComment(comment_id)
+        .then(() => {
+            response.status(204).send();
+        })
+        .catch(next);
+}
+

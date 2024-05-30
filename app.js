@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment, patchArticleVotes } = require("../be-nc-news/db/controllers/news.controller")
+const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment, patchArticleVotes, deleteCommentByID } = require("../be-nc-news/db/controllers/news.controller")
 
 const app = express();
 app.use(express.json())
@@ -16,6 +16,8 @@ app.get("/api/articles/:article_id/comments", getArticleCommentsByID)
 app.post("/api/articles/:article_id/comments", postComment)
 
 app.patch("/api/articles/:article_id", patchArticleVotes)
+
+app.delete("/api/comments/:comment_id", deleteCommentByID)
 
 app.use((error, request, response, next) => {
     if (error.status && error.msg) {
