@@ -20,9 +20,10 @@ exports.getArticleByID = (request, response, next) => {
 }
 
 exports.getAllArticles = (request, response, next) => {
-    selectArticles()
+    const { topic } = request.query;
+    selectArticles(topic)
     .then((articles) => {
-        response.status(200).send({ articles : articles })
+        response.status(200).send({ articles })
     })
     .catch(next);
 }

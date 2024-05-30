@@ -22,15 +22,23 @@ exports.selectArticleByID = (article_id) => {
     })
 }
 
-exports.selectArticles = () => {
-    return db.query(`SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, 
+exports.selectArticles = (topic) => {
+    let dbQuery = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, 
     articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles 
-    JOIN comments ON comments.article_id = articles.article_id
-    GROUP BY articles.article_id ORDER BY articles.created_at DESC;`)
-    .then((response) => {
-        return response.rows
-    })
-}
+    JOIN comments ON comments.article_id = articles.article_id`
+    let queryTopics = []
+    if (topic) {
+        dbQuery += ` WHERE articles.topic = $1`;
+        queryTopics.push(topic);
+      }
+    
+      dbQuery += ` GROUP BY articles.article_id ORDER BY articles.created_at DESC;`;
+    
+      return db.query(dbQuery, queryTopics)
+        .then((response) => {
+          return response.rows;
+        })
+    }
 
 exports.selectCommentsByArticleID = (article_id) => {
     return db.query(`SELECT * FROM comments WHERE article_id = $1
