@@ -256,3 +256,28 @@ describe("GET /api/users", () => {
   });
 });
 
+describe("Additional GET /api/articles query tests", () => {
+  test("Responds with an array of articles filtered by topic", () => {
+    return request(app)
+      .get("/api/articles?topic=coding")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles.length).toBeGreaterThan(0);
+        body.articles.forEach((article) => {
+          expect(article.topic).toBe("coding");
+        });
+      });
+  });
+  test("Responds with an empty array if no articles match the topic", () => {
+    return request(app)
+      .get("/api/articles?topic=nonexistent_topic")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles.length).toBe(0);
+      });
+  });
+});
+
+
