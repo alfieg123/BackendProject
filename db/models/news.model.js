@@ -104,3 +104,20 @@ exports.insertComment = (article_id, username, body) => {
       throw error;
     });
   };
+
+exports.updateArticleVotesByID = (inc_votes, article_id) => {
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [article_id, inc_votes])
+    .then((response) => {
+        const article = response.rows[0];
+        if (!article) {
+            return Promise.reject({
+            status: 404,
+            msg: `No article found for article_id: ${article_id}`,
+            });
+        }
+        return article;
+        })
+        .catch((error) => {
+        throw error;
+        });
+    };
