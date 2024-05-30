@@ -6,9 +6,6 @@ exports.selectTopics = () => {
     .then((response) => {
         return response.rows
     })
-    .catch((error) => {
-        throw error;
-    });
 }
 
 exports.selectArticleByID = (article_id) => {
@@ -23,9 +20,6 @@ exports.selectArticleByID = (article_id) => {
         }
     return article
     })
-    .catch((error) => {
-        throw error;
-    });
 }
 
 exports.selectArticles = () => {
@@ -36,9 +30,6 @@ exports.selectArticles = () => {
     .then((response) => {
         return response.rows
     })
-    .catch((error) => {
-        throw error;
-    });
 }
 
 exports.selectCommentsByArticleID = (article_id) => {
@@ -54,9 +45,6 @@ exports.selectCommentsByArticleID = (article_id) => {
         }
     return article
     })
-    .catch((error) => {
-        throw error;
-    });
 }
 
 exports.selectArticleWithCommentsByID = (article_id) => {
@@ -80,9 +68,6 @@ exports.selectArticleWithCommentsByID = (article_id) => {
           }));
         });
     })
-    .catch((error) => {
-      throw error;
-    });
 };
 
 exports.selectUserByUsername = (username) => {
@@ -90,9 +75,6 @@ exports.selectUserByUsername = (username) => {
   .then((response) => {
       return response.rows[0];
   })
-  .catch((error) => {
-      throw error;
-  });
 };
 
 exports.insertComment = (article_id, username, body) => {
@@ -100,9 +82,6 @@ exports.insertComment = (article_id, username, body) => {
     .then((response) => {
       return response.rows[0];
     })
-    .catch((error) => {
-      throw error;
-    });
   };
 
 exports.updateArticleVotesByID = (inc_votes, article_id) => {
@@ -117,9 +96,6 @@ exports.updateArticleVotesByID = (inc_votes, article_id) => {
         }
         return article;
         })
-        .catch((error) => {
-        throw error;
-        });
     };
 
 exports.removeComment = (comment_id) => {
@@ -133,8 +109,11 @@ exports.removeComment = (comment_id) => {
             });
         }
         })
-        .catch((error) => {
-        throw error;
-        });
     };
-    
+
+exports.selectUsers = () => {
+    return db.query(`SELECT * FROM users`)
+    .then((response) => {
+        return response.rows
+    })
+    }   

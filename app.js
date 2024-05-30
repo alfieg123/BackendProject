@@ -1,6 +1,7 @@
 const express = require("express")
 
-const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment, patchArticleVotes, deleteCommentByID } = require("../be-nc-news/db/controllers/news.controller")
+const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment, patchArticleVotes,
+   deleteCommentByID, getAllUsers } = require("../be-nc-news/db/controllers/news.controller")
 
 const app = express();
 app.use(express.json())
@@ -12,6 +13,7 @@ app.get("/api/topics", getAllTopics);
 app.get("/api/articles", getAllArticles)
 app.get("/api/articles/:article_id", getArticleByID)
 app.get("/api/articles/:article_id/comments", getArticleCommentsByID)
+app.get("/api/users", getAllUsers)
 
 app.post("/api/articles/:article_id/comments", postComment)
 

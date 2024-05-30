@@ -1,5 +1,6 @@
 const { request } = require("../../app.js")
-const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID, selectUserByUsername, insertComment, updateArticleVotesByID, removeComment } = require("../models/news.model.js")
+const { selectTopics, selectArticleByID, selectArticles, selectCommentsByArticleID, 
+    selectUserByUsername, insertComment, updateArticleVotesByID, removeComment, selectUsers } = require("../models/news.model.js")
 
 exports.getAllTopics = (request, response, next) => {
     selectTopics()
@@ -73,3 +74,10 @@ exports.patchArticleVotes = (request, response, next) => {
         .catch(next);
 }
 
+exports.getAllUsers = (request, response, next) => {
+    selectUsers()
+    .then((users) => {
+        response.status(200).send({ users })
+    })
+    .catch(next);
+}
