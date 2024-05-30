@@ -3,7 +3,7 @@ const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const data = require("../db/data/development-data/index");
-const endpoints = require("../endpoints.json")
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => {
     return seed(data);
@@ -180,3 +180,38 @@ beforeEach(() => {
           })
         })
       })
+
+  describe("PATCH /api/articles/:article_id", () => {
+  test("Responds with an updated article with adjusted increased vote count", () => {
+    return request(app)
+    .patch("/api/articles/1")
+    .send({ inc_votes : 73 })
+    .expect(200)
+    .then(({ body }) => {
+      console.log(body)
+      expect(body.article).toHaveProperty("article_id", 1);
+      expect(body.article).toHaveProperty("votes", 73);
+    });
+  });
+  test("Responds with an updated article with adjusted decreased vote count", () => {
+    return request(app)
+    .patch("/api/articles/4")
+    .send({ inc_votes : -24 })
+    .expect(200)
+    .then(({ body }) => {
+      console.log(body)
+      expect(body.article).toHaveProperty("article_id", 4);
+      expect(body.article).toHaveProperty("votes", -24);
+    });
+  });
+  test("Responds with a 400 error when inc_votes is not a number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "Test" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
+
