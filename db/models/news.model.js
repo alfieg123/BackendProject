@@ -121,3 +121,20 @@ exports.updateArticleVotesByID = (inc_votes, article_id) => {
         throw error;
         });
     };
+
+exports.removeComment = (comment_id) => {
+    return db.query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *;`, [comment_id])
+    .then((response) => {
+        const comment = response.rows[0];
+        if (!comment) {
+            return Promise.reject({
+            status: 404,
+            msg: `No comment found for comment_id: ${comment_id}`,
+            });
+        }
+        })
+        .catch((error) => {
+        throw error;
+        });
+    };
+    

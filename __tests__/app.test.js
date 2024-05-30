@@ -188,7 +188,6 @@ beforeEach(() => {
     .send({ inc_votes : 73 })
     .expect(200)
     .then(({ body }) => {
-      console.log(body)
       expect(body.article).toHaveProperty("article_id", 1);
       expect(body.article).toHaveProperty("votes", 73);
     });
@@ -199,7 +198,6 @@ beforeEach(() => {
     .send({ inc_votes : -24 })
     .expect(200)
     .then(({ body }) => {
-      console.log(body)
       expect(body.article).toHaveProperty("article_id", 4);
       expect(body.article).toHaveProperty("votes", -24);
     });
@@ -215,3 +213,28 @@ beforeEach(() => {
   });
 });
 
+describe("DELETE /api/comments/:comment_id", () => {
+  test("Responds with a 204 status and no content and the comment is deleted", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204);
+  });
+
+  test("Responds with a 404 error when the comment_id does not exist", () => {
+    return request(app)
+      .delete("/api/comments/999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No comment found for comment_id: 999999");
+      });
+  });
+
+  test("Responds with a 400 error when comment_id is invalid", () => {
+    return request(app)
+      .delete("/api/comments/invalid-id")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
