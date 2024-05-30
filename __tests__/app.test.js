@@ -188,7 +188,6 @@ beforeEach(() => {
     .send({ inc_votes : 73 })
     .expect(200)
     .then(({ body }) => {
-      console.log(body)
       expect(body.article).toHaveProperty("article_id", 1);
       expect(body.article).toHaveProperty("votes", 73);
     });
@@ -199,7 +198,6 @@ beforeEach(() => {
     .send({ inc_votes : -24 })
     .expect(200)
     .then(({ body }) => {
-      console.log(body)
       expect(body.article).toHaveProperty("article_id", 4);
       expect(body.article).toHaveProperty("votes", -24);
     });
