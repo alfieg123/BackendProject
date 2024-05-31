@@ -9,16 +9,20 @@ exports.selectTopics = () => {
 }
 
 exports.selectArticleByID = (article_id) => {
-    return db.query(`SELECT * FROM articles WHERE article_id = $1;`, [article_id])
+    const dbQuery = `
+    SELECT articles.*, COUNT(comments.comment_id) AS comment_count FROM articles 
+    JOIN comments ON comments.article_id = articles.article_id
+    WHERE articles.article_id = $1 GROUP BY articles.article_id;`;
+  return db.query(dbQuery, [article_id])
     .then((response) => {
-        const article = response.rows[0];
-        if (!article) {
-          return Promise.reject({
-            status: 404,
-            msg: `No article found for article_id: ${article_id}`,
+      const article = response.rows[0];
+      if (!article) {
+        return Promise.reject({
+          status: 404,
+          msg: `No article found for article_id: ${article_id}`,
         })
-        }
-    return article
+      }
+      return article
     })
 }
 

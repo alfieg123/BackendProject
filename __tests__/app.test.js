@@ -55,6 +55,7 @@ beforeEach(() => {
             expect(body.article).toHaveProperty("created_at");
             expect(body.article).toHaveProperty("votes");
             expect(body.article).toHaveProperty("article_img_url");
+            expect(body.article).toHaveProperty("comment_count");
           })
         });
     test("Responds with a 404 error if article ID does not exist", () => {
