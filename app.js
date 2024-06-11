@@ -1,8 +1,7 @@
 const express = require("express")
 
 const { getAllTopics, getArticleByID, getAllArticles, getArticleCommentsByID, postComment, patchArticleVotes,
-   deleteCommentByID, getAllUsers } = require("../be-nc-news/db/controllers/news.controller")
-
+   deleteCommentByID, getAllUsers } = require("./db/controllers/news.controller")
 const app = express();
 app.use(express.json())
 
