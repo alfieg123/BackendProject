@@ -26,7 +26,12 @@ exports.selectArticleByID = (article_id) => {
     })
 }
 
-exports.selectArticles = (topic) => {
+exports.selectArticles = (topic, sort_by = 'created_at', order = 'desc') => {
+    const validSortColumns = ['created_at', 'comment_count', 'votes'];
+    const validOrderValues = ['asc', 'desc'];
+    if (!validSortColumns.includes(sort_by)) sort_by = 'created_at';
+    if (!validOrderValues.includes(order)) order = 'desc';
+    
     let dbQuery = `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, 
     articles.votes, articles.article_img_url, COUNT(comments.comment_id) AS comment_count FROM articles 
     JOIN comments ON comments.article_id = articles.article_id`
